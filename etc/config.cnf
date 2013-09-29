@@ -1,0 +1,34 @@
+#
+# comment
+#
+
+; comment
+
+
+[SECT1]			# comment
+a=1				# comment
+b =2			# comment
+c	=	3		# comment
+	d= 4		# comment
+# comment
+e = 5
+
+# comment
+[ SECT2 ]
+aa = 11
+bb =	22		# commment
+# comment
+cc=33
+
+
+; last modified 27 September 2013 by Taner YILMAZ
+[owner]
+name = Taner YILMAZ
+title=Software Engineer
+ 
+[database]
+; use IP address in case network name resolution is not working
+server=127.0.0.1    
+port=5555
+file="server.dat"
+
