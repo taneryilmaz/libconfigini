@@ -28,10 +28,10 @@
 #include "config.h"
 #include "queue.h"
 
-#define COMMENT_CHARS		"#;"		/* default comment chars */
-#define KEYVAL_SEP			'='			/* default key-val seperator character */
-#define STR_TRUE			"1"			/* default string valu of true */
-#define STR_FALSE			"0"			/* default string valu of false */
+#define COMMENT_CHARS     "#;"   /* default comment chars */
+#define KEYVAL_SEP        '='    /* default key-val seperator character */
+#define STR_TRUE          "1"    /* default string valu of true */
+#define STR_FALSE         "0"    /* default string valu of false */
 
 
 typedef struct ConfigKeyValue
@@ -61,16 +61,16 @@ struct Config
 
 
 /**
- * \brief				ConfigSetCommentCharset() sets comment characters
+ * \brief               ConfigSetCommentCharset() sets comment characters
  *
- * \param cfg			config handle
- * \param comment_ch	charaters to consider as comments
+ * \param cfg           config handle
+ * \param comment_ch    charaters to consider as comments
  *
- * \return				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigSetCommentCharset(Config *cfg, const char *comment_ch)
 {
@@ -90,15 +90,15 @@ ConfigRet ConfigSetCommentCharset(Config *cfg, const char *comment_ch)
 }
 
 /**
- * \brief				ConfigSetCommentCharset() sets comment characters
+ * \brief               ConfigSetCommentCharset() sets comment characters
  *
- * \param cfg			config handle
- * \param ch			charater to consider as key-value seperator
+ * \param cfg           config handle
+ * \param ch            charater to consider as key-value seperator
  *
- * \return				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigSetKeyValSepChar(Config *cfg, char ch)
 {
@@ -111,17 +111,17 @@ ConfigRet ConfigSetKeyValSepChar(Config *cfg, char ch)
 }
 
 /**
- * \brief				ConfigSetCommentCharset() sets comment characters
+ * \brief               ConfigSetCommentCharset() sets comment characters
  *
- * \param cfg			config handle
- * \param true_str		string value of boolean true
- * \param false_str		string value of boolean false
+ * \param cfg           config handle
+ * \param true_str      string value of boolean true
+ * \param false_str     string value of boolean false
  *
- * \return				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigSetBoolString(Config *cfg, const char *true_str, const char *false_str)
 {
@@ -156,17 +156,17 @@ ConfigRet ConfigSetBoolString(Config *cfg, const char *true_str, const char *fal
 
 
 /**
- * \brief 				ConfigGetSection() gets the requested section
+ * \brief               ConfigGetSection() gets the requested section
  *
- * \param cfg			config handle to search in
- * \param section		section name to search for
- * \param sect			pointer to ConfigSection* searched for to save
+ * \param cfg           config handle to search in
+ * \param section       section name to search for
+ * \param sect          pointer to ConfigSection* searched for to save
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_RET_OK
  */
 static ConfigRet ConfigGetSection(const Config *cfg, const char *section, ConfigSection **sect)
 {
@@ -184,16 +184,16 @@ static ConfigRet ConfigGetSection(const Config *cfg, const char *section, Config
 }
 
 /**
- * \brief				Checks whether section exists
+ * \brief               Checks whether section exists
  *
- * \param cfg			config handle to search in
- * \param section		section name to search for
+ * \param cfg           config handle to search in
+ * \param section       section name to search for
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_RET_OK
  */
 bool ConfigHasSection(const Config *cfg, const char *section)
 {
@@ -203,18 +203,18 @@ bool ConfigHasSection(const Config *cfg, const char *section)
 }
 
 /**
- * \brief 				ConfigGetKeyValue() gets the ConfigKeyValue *
+ * \brief               ConfigGetKeyValue() gets the ConfigKeyValue *
  *
- * \param cfg			config handle
- * \param sect			section to search in
- * \param key			key to search for
- * \param kv			pointer to ConfigKeyValue* searched for to save
+ * \param cfg           config handle
+ * \param sect          section to search in
+ * \param key           key to search for
+ * \param kv            pointer to ConfigKeyValue* searched for to save
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 static ConfigRet ConfigGetKeyValue(const Config *cfg, ConfigSection *sect,
 		const char *key, ConfigKeyValue **kv)
@@ -237,20 +237,20 @@ static ConfigRet ConfigGetKeyValue(const Config *cfg, ConfigSection *sect,
 
 
 /**
- * \brief 				ConfigReadString() reads a string value from the cfg
+ * \brief               ConfigReadString() reads a string value from the cfg
  *
- * \param cfg			config handle
- * \param section		section to search in
- * \param key			key to search for
- * \param value			value to save in
- * \param size			value buffer size
+ * \param cfg           config handle
+ * \param section       section to search in
+ * \param key           key to search for
+ * \param value         value to save in
+ * \param size          value buffer size
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *key, char *value, int size)
 {
@@ -273,20 +273,20 @@ ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *k
 }
 
 /**
- * \brief 				ConfigReadInt() reads an integer value from the cfg
+ * \brief               ConfigReadInt() reads an integer value from the cfg
  *
- * \param cfg			config handle
- * \param section		section to search in
- * \param key			key to search for
- * \param value			value to save in
+ * \param cfg           config handle
+ * \param section       section to search in
+ * \param key           key to search for
+ * \param value         value to save in
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key, int *value)
 {
@@ -312,20 +312,20 @@ ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key,
 }
 
 /**
- * \brief 				ConfigReadUnsignedInt() reads an unsigned integer value from the cfg
+ * \brief               ConfigReadUnsignedInt() reads an unsigned integer value from the cfg
  *
- * \param cfg			config handle
- * \param section		section to search in
- * \param key			key to search for
- * \param value			value to save in
+ * \param cfg           config handle
+ * \param section       section to search in
+ * \param key           key to search for
+ * \param value         value to save in
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const char *key, unsigned int *value)
 {
@@ -351,20 +351,20 @@ ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const ch
 }
 
 /**
- * \brief 				ConfigReadFloat() reads a float value from the cfg
+ * \brief               ConfigReadFloat() reads a float value from the cfg
  *
- * \param cfg			config handle
- * \param section		section to search in
- * \param key			key to search for
- * \param value			value to save in
+ * \param cfg           config handle
+ * \param section       section to search in
+ * \param key           key to search for
+ * \param value         value to save in
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *key, float *value)
 {
@@ -390,20 +390,20 @@ ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *ke
 }
 
 /**
- * \brief 				ConfigReadDouble() reads a double value from the cfg
+ * \brief               ConfigReadDouble() reads a double value from the cfg
  *
- * \param cfg			config handle
- * \param section		section to search in
- * \param key			key to search for
- * \param value			value to save in
+ * \param cfg           config handle
+ * \param section       section to search in
+ * \param key           key to search for
+ * \param value         value to save in
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *key, double *value)
 {
@@ -429,20 +429,20 @@ ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *k
 }
 
 /**
- * \brief 				ConfigReadBool() reads a boolean value from the cfg
+ * \brief               ConfigReadBool() reads a boolean value from the cfg
  *
- * \param cfg			config handle
- * \param section		section to search in
- * \param key			key to search for
- * \param value			value to save in
+ * \param cfg           config handle
+ * \param section       section to search in
+ * \param key           key to search for
+ * \param value         value to save in
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key, bool *value)
 {
@@ -485,18 +485,18 @@ ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key
 
 
 /**
- * \brief 				ConfigAddSection() creates a section in the cfg
+ * \brief               ConfigAddSection() creates a section in the cfg
  *
- * \param cfg			config handle
- * \param section		section to add
- * \param sect			pointer to added ConfigSection*
+ * \param cfg           config handle
+ * \param section       section to add
+ * \param sect          pointer to added ConfigSection*
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 static ConfigRet ConfigAddSection(Config *cfg, const char *section, ConfigSection **sect)
 {
@@ -526,20 +526,20 @@ static ConfigRet ConfigAddSection(Config *cfg, const char *section, ConfigSectio
 }
 
 /**
- * \brief 				ConfigAddString() adds the key with string value to the cfg
+ * \brief               ConfigAddString() adds the key with string value to the cfg
  *
- * \param cfg			config handle
- * \param section		section to add in
- * \param key			key to save as
- * \param value			value to save as
+ * \param cfg           config handle
+ * \param section       section to add in
+ * \param key           key to save as
+ * \param value         value to save as
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigAddString(Config *cfg, const char *section, const char *key, const char *value)
 {
@@ -588,20 +588,20 @@ ConfigRet ConfigAddString(Config *cfg, const char *section, const char *key, con
 }
 
 /**
- * \brief 				ConfigAddInt() adds the key with integer value to the cfg
+ * \brief               ConfigAddInt() adds the key with integer value to the cfg
  *
- * \param cfg			config handle
- * \param section		section to add in
- * \param key			key to save as
- * \param value			value to save as
+ * \param cfg           config handle
+ * \param section       section to add in
+ * \param key           key to save as
+ * \param value         value to save as
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigAddInt(Config *cfg, const char *section, const char *key, int value)
 {
@@ -613,20 +613,20 @@ ConfigRet ConfigAddInt(Config *cfg, const char *section, const char *key, int va
 }
 
 /**
- * \brief 				ConfigAddUnsignedInt() adds the key with unsigned integer value to the cfg
+ * \brief               ConfigAddUnsignedInt() adds the key with unsigned integer value to the cfg
  *
- * \param cfg			config handle
- * \param section		section to add in
- * \param key			key to save as
- * \param value			value to save as
+ * \param cfg           config handle
+ * \param section       section to add in
+ * \param key           key to save as
+ * \param value         value to save as
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigAddUnsignedInt(Config *cfg, const char *section, const char *key, unsigned int value)
 {
@@ -638,20 +638,20 @@ ConfigRet ConfigAddUnsignedInt(Config *cfg, const char *section, const char *key
 }
 
 /**
- * \brief 				ConfigAddFloat() adds the key with float value to the cfg
+ * \brief               ConfigAddFloat() adds the key with float value to the cfg
  *
- * \param cfg			config handle
- * \param section		section to add in
- * \param key			key to save as
- * \param value			value to save as
+ * \param cfg           config handle
+ * \param section       section to add in
+ * \param key           key to save as
+ * \param value         value to save as
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigAddFloat(Config * cfg, const char *section, const char *key, float value)
 {
@@ -663,20 +663,20 @@ ConfigRet ConfigAddFloat(Config * cfg, const char *section, const char *key, flo
 }
 
 /**
- * \brief 				ConfigAddDouble() adds the key with double value to the cfg
+ * \brief               ConfigAddDouble() adds the key with double value to the cfg
  *
- * \param cfg			config handle
- * \param section		section to add in
- * \param key			key to save as
- * \param value			value to save as
+ * \param cfg           config handle
+ * \param section       section to add in
+ * \param key           key to save as
+ * \param value         value to save as
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigAddDouble(Config *cfg, const char *section, const char *key, double value)
 {
@@ -688,20 +688,20 @@ ConfigRet ConfigAddDouble(Config *cfg, const char *section, const char *key, dou
 }
 
 /**
- * \brief 				ConfigAddBool() adds the key with blooean value to the cfg
+ * \brief               ConfigAddBool() adds the key with blooean value to the cfg
  *
- * \param cfg			config handle
- * \param section		section to add in
- * \param key			key to save as
- * \param value			value to save as
+ * \param cfg           config handle
+ * \param section       section to add in
+ * \param key           key to save as
+ * \param value         value to save as
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigAddBool(Config * cfg, const char *section, const char *key, bool value)
 {
@@ -726,18 +726,18 @@ static void _ConfigRemoveKey(ConfigSection *sect, ConfigKeyValue *kv)
 }
 
 /**
- * \brief 				ConfigRemoveKey() removes the key which exists under section from the cfg
+ * \brief               ConfigRemoveKey() removes the key which exists under section from the cfg
  *
- * \param cfg			config handle
- * \param section		section to seach in
- * \param key			key to remove
+ * \param cfg           config handle
+ * \param section       section to seach in
+ * \param key           key to remove
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigRemoveKey(Config *cfg, const char *section, const char *key)
 {
@@ -775,16 +775,16 @@ static void _ConfigRemoveSection(Config *cfg, ConfigSection *sect)
 }
 
 /**
- * \brief 				ConfigRemoveSection() removes section from the cfgfile
+ * \brief               ConfigRemoveSection() removes section from the cfgfile
  *
- * \param cfg			config handle
- * \param section		section to remove
+ * \param cfg           config handle
+ * \param section       section to remove
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigRemoveSection(Config *cfg, const char *section)
 {
@@ -801,9 +801,9 @@ ConfigRet ConfigRemoveSection(Config *cfg, const char *section)
 }
 
 /**
-	\brief 				ConfigNew() creates a cfg
-
-	\return 			Config* handle
+ * \brief               ConfigNew() creates a cfg
+ *
+ * \return              Config* handle
  */
 Config *ConfigNew()
 {
@@ -823,9 +823,9 @@ Config *ConfigNew()
 }
 
 /**
-	\brief 				ConfigFree() frees the memory for a cfg
-
-	\param cfg			config handle
+ * \brief               ConfigFree() frees the memory for a cfg
+ *
+ * \param cfg           config handle
  */
 void ConfigFree(Config *cfg)
 {
@@ -848,17 +848,17 @@ void ConfigFree(Config *cfg)
 
 
 /**
- * \brief 				Gets section name on the buffer p
+ * \brief               Gets section name on the buffer p
  *
- * \param cfg			config handle
- * \param p				read buffer
- * \param section		pointer address to section
+ * \param cfg           config handle
+ * \param p             read buffer
+ * \param section       pointer address to section
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_PARSING
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_PARSING
+ *                      CONFIG_RET_OK
  */
 static ConfigRet GetSectName(Config *cfg, char *p, char **section)
 {
@@ -911,19 +911,19 @@ static ConfigRet GetSectName(Config *cfg, char *p, char **section)
 }
 
 /**
- * \brief 				Gets key and value on the buffer p
+ * \brief               Gets key and value on the buffer p
  *
- * \param cfg			config handle
- * \param p				read buffer
- * \param key			pointer address to key
- * \param val			pointer address to value
+ * \param cfg           config handle
+ * \param p             read buffer
+ * \param key           pointer address to key
+ * \param val           pointer address to value
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_PARSING
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_PARSING
+ *                      CONFIG_RET_OK
  */
 static ConfigRet GetKeyVal(Config *cfg, char *p, char **key, char **val)
 {
@@ -979,22 +979,22 @@ static ConfigRet GetKeyVal(Config *cfg, char *p, char **key, char **val)
 }
 
 /**
- * \brief 				ConfigOpenFile() opens the file, reads it's entire contents and
- * 						populates to cfg internal structures
+ * \brief               ConfigOpenFile() opens the file, reads it's entire contents and
+ *                      populates to cfg internal structures
  *
- * \param cfg			config handle. If cfg is NULL a new one is created.
- * \param filename		name of file to open and load
+ * \param cfg           config handle. If cfg is NULL a new one is created.
+ * \param filename      name of file to open and load
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_FILE
- * 						CONFIG_ERR_MEMALLOC
- * 						CONFIG_ERR_NO_SECTION
- * 						CONFIG_ERR_NO_KEY
- * 						CONFIG_ERR_INVALID_VALUE
- * 						CONFIG_ERR_PARSING
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_FILE
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_PARSING
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigOpenFile(const char *filename, Config **cfg)
 {
@@ -1068,15 +1068,15 @@ error:
 }
 
 /**
- * \brief				ConfigPrintToStream() prints all cfg content to the stream
+ * \brief               ConfigPrintToStream() prints all cfg content to the stream
  *
- * \param cfg			config handle
- * \param stream		stream to print
+ * \param cfg           config handle
+ * \param stream        stream to print
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigPrintToStream(const Config *cfg, FILE *stream)
 {
@@ -1107,16 +1107,16 @@ ConfigRet ConfigPrintToStream(const Config *cfg, FILE *stream)
 }
 
 /**
- * \brief				ConfigPrintToFile() prints (saves) all cfg content to the file
+ * \brief               ConfigPrintToFile() prints (saves) all cfg content to the file
  *
- * \param cfg			config handle
- * \param filename		filename to save in
+ * \param cfg           config handle
+ * \param filename      filename to save in
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_ERR_FILE
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_FILE
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigPrintToFile(const Config *cfg, char *filename)
 {
@@ -1137,15 +1137,15 @@ ConfigRet ConfigPrintToFile(const Config *cfg, char *filename)
 }
 
 /**
- * \brief				ConfigPrintSettings() prints settings to the stream
+ * \brief               ConfigPrintSettings() prints settings to the stream
  *
- * \param cfg			config handle
- * \param stream		stream to print
+ * \param cfg           config handle
+ * \param stream        stream to print
  *
- * \return 				ConfigRet type
+ * \return              ConfigRet type
  *
- * 						CONFIG_ERR_INVALID_PARAM
- * 						CONFIG_RET_OK
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_RET_OK
  */
 ConfigRet ConfigPrintSettings(const Config *cfg, FILE *stream)
 {

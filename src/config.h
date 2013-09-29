@@ -68,7 +68,9 @@ ConfigRet   ConfigPrintSettings(const Config *cfg, FILE *stream);
 Config*     ConfigNew();
 void 	    ConfigFree(Config *cfg);
 
-const char *ConfigGetError(const Config *cfg);
+ConfigRet   ConfigSetCommentCharset(Config *cfg, const char *comment_ch);
+ConfigRet   ConfigSetKeyValSepChar(Config *cfg, char ch);
+ConfigRet   ConfigSetBoolString(Config *cfg, const char *true_str, const char *false_str);
 
 ConfigRet   ConfigReadString(const Config *cfg, const char *section, const char *key, char *value, int size);
 ConfigRet   ConfigReadInt(const Config *cfg, const char *section, const char *key, int *value);
