@@ -7,7 +7,7 @@ SRCS = test.c
 
 OBJS := ${SRCS:.c=.o}
 
-DEP     = config
+DEP     = configini
 INCDIRS = ../src
 LIBDIRS = ../
 

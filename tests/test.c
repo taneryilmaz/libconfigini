@@ -1,11 +1,11 @@
 /*
- * libconfig tests
+ * libconfigini tests
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../src/config.h"
+#include "../src/configini.h"
 
 
 #define CONFIGREADFILE		"../etc/config.cnf"

@@ -1,5 +1,5 @@
 /*
-   libconfig - a configuration file parser library
+   libconfigini - an ini formatted configuration parser library
    Copyright (C) 2013-present Taner YILMAZ
 
 
@@ -25,7 +25,7 @@
 #include <ctype.h>
 #include <errno.h>
 
-#include "config.h"
+#include "configini.h"
 #include "queue.h"
 
 #define COMMENT_CHARS        "#;"   /* default comment chars */

@@ -1,5 +1,5 @@
 /*
-   libconfig - a configuration file parser library
+   libconfigini - an ini formatted configuration parser library
    Copyright (C) 2013-present Taner YILMAZ
 
 
@@ -18,8 +18,8 @@
    <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CONFIG_H_
-#define CONFIG_H_
+#ifndef CONFIGINI_H_
+#define CONFIGINI_H_
 
 #include <stdio.h>
 
@@ -99,4 +99,4 @@ ConfigRet   ConfigRemoveKey(Config *cfg, const char *section, const char *key);
 #endif
 
 
-#endif /* CONFIG_H_ */
+#endif /* CONFIGINI_H_ */

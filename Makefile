@@ -1,16 +1,16 @@
 #
-#   libconfig - a configuration file parser library
+#   libconfigini - an ini formatted configuration parser library
 #   Copyright (C) 2013-present Taner YILMAZ
 #
 
-LIB = config
+LIB = configini
 
 LIBARCH = $(patsubst %,lib%.a,${LIB})
 
-HDRS = src/config.h src/queue.h
-SRCS = src/config.c
+HDRS = src/configini.h src/queue.h
+SRCS = src/configini.c
 
-INSTALLHDRS = src/config.h
+INSTALLHDRS = src/configini.h
 
 OBJS := ${SRCS:.c=.o}
 
