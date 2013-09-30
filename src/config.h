@@ -1,6 +1,6 @@
 /*
    libconfig - a configuration file parser library
-   Copyright (C) 2013 Taner YILMAZ
+   Copyright (C) 2013-present Taner YILMAZ
 
 
    This library is free software; you can redistribute it and/or

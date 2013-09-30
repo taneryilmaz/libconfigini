@@ -1,7 +1,7 @@
 #
-# libconfig Makefile
+#   libconfig - a configuration file parser library
+#   Copyright (C) 2013-present Taner YILMAZ
 #
-
 
 LIB = config
 
@@ -43,7 +43,7 @@ install: all
 	@mkdir -p $(INSTALLDIR)/include && cp $(INSTALLHDRS) $(INSTALLDIR)/include
 	@mkdir -p $(INSTALLDIR)/lib     && cp $(LIBARCH) $(INSTALLDIR)/lib
 
-test:
+test: $(LIBARCH)
 	$(MAKE) -C tests/
 
 clean:

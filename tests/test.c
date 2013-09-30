@@ -20,7 +20,9 @@
 
 
 
-
+/*
+ * Read Config file
+ */
 static void Test1()
 {
 	Config *cfg = NULL;
@@ -38,6 +40,9 @@ static void Test1()
 	ConfigFree(cfg);
 }
 
+/*
+ * Read Config file, edit and save to new file
+ */
 static void Test2()
 {
 	Config *cfg = NULL;
@@ -64,6 +69,9 @@ static void Test2()
 	ConfigFree(cfg);
 }
 
+/*
+ * Create Config
+ */
 static void Test3()
 {
 	Config *cfg = NULL;
@@ -85,6 +93,7 @@ static void Test3()
 
 	ConfigFree(cfg);
 }
+
 
 int main()
 {

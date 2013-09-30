@@ -38,7 +38,7 @@ clean:
 
 help:
 	@echo "targets:"
-	@echo "   all            Build binary: $(BIN)"
-	@echo "   all            Build binary: $(BIN)"
+	@echo "   all            Build all"
+	@echo "   $(BIN)         Build binary: $(BIN)"
 	@echo "   clean          Clean library generated files"
 	
