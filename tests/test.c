@@ -41,7 +41,7 @@ static void Test1()
 }
 
 /*
- * Read Config file, edit and save to new file
+ * Create Config handle, read Config file, edit and save to new file
  */
 static void Test2()
 {
@@ -49,6 +49,11 @@ static void Test2()
 
 	ENTER_TEST_FUNC;
 
+	/* set settings */
+	cfg = ConfigNew();
+	ConfigSetBoolString(cfg, "yes", "no");
+
+	/* we can give initialized handle (rules has been set) */
 	if (ConfigOpenFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
 		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
 		return;
@@ -70,7 +75,7 @@ static void Test2()
 }
 
 /*
- * Create Config
+ * Create Config handle and add sections & key-values
  */
 static void Test3()
 {
@@ -94,12 +99,34 @@ static void Test3()
 	ConfigFree(cfg);
 }
 
+/*
+ * Create Config without any section
+ */
+static void Test4()
+{
+	Config *cfg = NULL;
+
+	ENTER_TEST_FUNC;
+
+	cfg = ConfigNew();
+
+	ConfigAddString(cfg, CONFIG_SECTNAME_DEFAULT, "Mehmet Akif ERSOY", "Safahat");
+	ConfigAddString(cfg, CONFIG_SECTNAME_DEFAULT, "Necip Fazil KISAKUREK", "Cile");
+	ConfigAddBool(cfg, CONFIG_SECTNAME_DEFAULT, "isset", true);
+	ConfigAddFloat(cfg, CONFIG_SECTNAME_DEFAULT, "degree", 35.0);
+
+	ConfigPrintToStream(cfg, stdout);
+
+	ConfigFree(cfg);
+}
+
 
 int main()
 {
 	Test1();
 	Test2();
 	Test3();
+	Test4();
 
 	return 0;
 }

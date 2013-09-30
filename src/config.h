@@ -37,6 +37,8 @@ typedef unsigned char bool;
 
 typedef struct Config Config;
 
+#define CONFIG_SECTNAME_DEFAULT		NULL
+
 
 /**
  * \brief Return types
@@ -79,12 +81,12 @@ ConfigRet   ConfigReadFloat(const Config *cfg, const char *section, const char *
 ConfigRet   ConfigReadDouble(const Config *cfg, const char *section, const char *key, double *value);
 ConfigRet   ConfigReadBool(const Config *cfg, const char *section, const char *key, bool *value);
 
-ConfigRet   ConfigAddString(Config * cfg, const char *section, const char *key, const char *value);
-ConfigRet   ConfigAddInt(Config * cfg, const char *section, const char *key, int value);
-ConfigRet   ConfigAddUnsignedInt(Config * cfg, const char *section, const char *key, unsigned int value);
-ConfigRet   ConfigAddFloat(Config * cfg, const char *section, const char *key, float value);
+ConfigRet   ConfigAddString(Config *cfg, const char *section, const char *key, const char *value);
+ConfigRet   ConfigAddInt(Config *cfg, const char *section, const char *key, int value);
+ConfigRet   ConfigAddUnsignedInt(Config *cfg, const char *section, const char *key, unsigned int value);
+ConfigRet   ConfigAddFloat(Config *cfg, const char *section, const char *key, float value);
 ConfigRet   ConfigAddDouble(Config *cfg, const char *section, const char *key, double value);
-ConfigRet   ConfigAddBool(Config * cfg, const char *section, const char *key, bool value);
+ConfigRet   ConfigAddBool(Config *cfg, const char *section, const char *key, bool value);
 
 bool        ConfigHasSection(const Config *cfg, const char *section);
 

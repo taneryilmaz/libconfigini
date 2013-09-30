@@ -28,12 +28,17 @@
 #include "config.h"
 #include "queue.h"
 
-#define COMMENT_CHARS     "#;"   /* default comment chars */
-#define KEYVAL_SEP        '='    /* default key-val seperator character */
-#define STR_TRUE          "1"    /* default string valu of true */
-#define STR_FALSE         "0"    /* default string valu of false */
+#define COMMENT_CHARS        "#;"   /* default comment chars */
+#define KEYVAL_SEP           '='    /* default key-val seperator character */
+#define STR_TRUE             "1"    /* default string valu of true */
+#define STR_FALSE            "0"    /* default string valu of false */
+
+#define CONFIG_INIT_MAGIC    0x12F0ED1
 
 
+/**
+ * \brief Configuration key-value
+ */
 typedef struct ConfigKeyValue
 {
 	char *key;
@@ -41,6 +46,9 @@ typedef struct ConfigKeyValue
 	TAILQ_ENTRY(ConfigKeyValue) next;
 } ConfigKeyValue;
 
+/**
+ * \brief Configuration section
+ */
 typedef struct ConfigSection
 {
 	char *name;
@@ -48,12 +56,16 @@ typedef struct ConfigSection
 	TAILQ_ENTRY(ConfigSection) next;
 } ConfigSection;
 
+/**
+ * \brief Configuration handle
+ */
 struct Config
 {
 	char *comment_chars;
 	char keyval_sep;
 	char *true_str;
 	char *false_str;
+	int  initnum;
 	TAILQ_HEAD(, ConfigSection) sect_list;
 };
 
@@ -489,7 +501,7 @@ ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key
  *
  * \param cfg           config handle
  * \param section       section to add
- * \param sect          pointer to added ConfigSection*
+ * \param sect          pointer to added ConfigSection* or NULL if not needed
  *
  * \return              ConfigRet type
  *
@@ -500,10 +512,14 @@ ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key
  */
 static ConfigRet ConfigAddSection(Config *cfg, const char *section, ConfigSection **sect)
 {
+	ConfigSection *_sect = NULL;
 	ConfigRet ret = CONFIG_RET_OK;
 
-	if (!cfg || !sect)
+	if (!cfg)
 		return CONFIG_ERR_INVALID_PARAM;
+
+	if (!sect)
+		sect = &_sect;
 
 	if ((ret = ConfigGetSection(cfg, section, sect)) != CONFIG_ERR_NO_SECTION)
 		return ret;
@@ -543,11 +559,11 @@ static ConfigRet ConfigAddSection(Config *cfg, const char *section, ConfigSectio
  */
 ConfigRet ConfigAddString(Config *cfg, const char *section, const char *key, const char *value)
 {
-	ConfigSection *sect;
-	ConfigKeyValue *kv;
+	ConfigSection *sect = NULL;
+	ConfigKeyValue *kv = NULL;
 	ConfigRet ret = CONFIG_RET_OK;
-	const char *p;
-	const char *q;
+	const char *p = NULL;
+	const char *q = NULL;
 
 	if (!cfg || !key || !value)
 		return CONFIG_ERR_INVALID_PARAM;
@@ -807,17 +823,25 @@ ConfigRet ConfigRemoveSection(Config *cfg, const char *section)
  */
 Config *ConfigNew()
 {
-	Config *cfg;
+	Config *cfg = NULL;
 
 	cfg = calloc(1, sizeof(Config));
 	if (cfg == NULL)
 		return NULL;
 
+	TAILQ_INIT(&cfg->sect_list);
+
+	/* add default section */
+	if (ConfigAddSection(cfg, CONFIG_SECTNAME_DEFAULT, NULL) != CONFIG_RET_OK) {
+		free(cfg);
+		return NULL;
+	}
+
 	cfg->comment_chars = strdup(COMMENT_CHARS);
 	cfg->keyval_sep = KEYVAL_SEP;
 	cfg->true_str = strdup(STR_TRUE);
 	cfg->false_str = strdup(STR_FALSE);
-	TAILQ_INIT(&cfg->sect_list);
+	cfg->initnum = CONFIG_INIT_MAGIC;
 
 	return cfg;
 }
@@ -1007,7 +1031,7 @@ ConfigRet ConfigOpenFile(const char *filename, Config **cfg)
 	bool newcfg = false;
 	ConfigRet ret = CONFIG_RET_OK;
 
-	if (!filename || !cfg)
+	if ( !filename || !cfg || (*cfg && ((*cfg)->initnum != CONFIG_INIT_MAGIC)) )
 		return CONFIG_ERR_INVALID_PARAM;
 
 	if ((fp = fopen(filename, "r")) == NULL)
@@ -1022,10 +1046,6 @@ ConfigRet ConfigOpenFile(const char *filename, Config **cfg)
 	}
 	else
 		_cfg = *cfg;
-
-	/* add default section */
-	if ((ret = ConfigAddSection(_cfg, NULL, &sect)) != CONFIG_RET_OK)
-		goto error;
 
 	while (!feof(fp)) {
 		if (fgets(buf, sizeof(buf), fp) == NULL)
@@ -1087,14 +1107,8 @@ ConfigRet ConfigPrintToStream(const Config *cfg, FILE *stream)
 		return CONFIG_ERR_INVALID_PARAM;
 
 	TAILQ_FOREACH(sect, &cfg->sect_list, next) {
-		/* if default section has no value, do not print */
-		if (!sect->name && !TAILQ_FIRST(&sect->kv_list))
-			continue;
-
 		if (sect->name)
 			fprintf(stream, "[%s]\n", sect->name);
-		else
-			fprintf(stream, "# Default section\n");
 
 		TAILQ_FOREACH(kv, &sect->kv_list, next) {
 			fprintf(stream, "%s=%s\n", kv->key, kv->value);
