@@ -29,13 +29,13 @@ static void Test1()
 
 	ENTER_TEST_FUNC;
 
-	if (ConfigOpenFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
+	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
 		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
 		return;
 	}
 
 	ConfigPrintSettings(cfg, stdout);
-	ConfigPrintToStream(cfg, stdout);
+	ConfigPrint(cfg, stdout);
 
 	ConfigFree(cfg);
 }
@@ -54,7 +54,7 @@ static void Test2()
 	ConfigSetBoolString(cfg, "yes", "no");
 
 	/* we can give initialized handle (rules has been set) */
-	if (ConfigOpenFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
+	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
 		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
 		return;
 	}
@@ -68,7 +68,7 @@ static void Test2()
 	ConfigAddString(cfg, "owner", "country", "Turkey");
 
 	ConfigPrintSettings(cfg, stdout);
-	ConfigPrintToStream(cfg, stdout);
+	ConfigPrint(cfg, stdout);
 	ConfigPrintToFile(cfg, CONFIGSAVEFILE);
 
 	ConfigFree(cfg);
@@ -94,7 +94,7 @@ static void Test3()
 	ConfigAddDouble(cfg, "SECTION2", "Lira", 100);
 
 	ConfigPrintSettings(cfg, stdout);
-	ConfigPrintToStream(cfg, stdout);
+	ConfigPrint(cfg, stdout);
 
 	ConfigFree(cfg);
 }
@@ -115,7 +115,7 @@ static void Test4()
 	ConfigAddBool(cfg, CONFIG_SECTNAME_DEFAULT, "isset", true);
 	ConfigAddFloat(cfg, CONFIG_SECTNAME_DEFAULT, "degree", 35.0);
 
-	ConfigPrintToStream(cfg, stdout);
+	ConfigPrint(cfg, stdout);
 
 	ConfigFree(cfg);
 }

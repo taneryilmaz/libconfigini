@@ -62,9 +62,11 @@ extern "C" {
 #endif
 
 
-ConfigRet   ConfigOpenFile(const char *filename, Config **cfg);
+ConfigRet   ConfigRead(FILE *fp, Config **cfg);
+ConfigRet   ConfigReadFile(const char *filename, Config **cfg);
+
+ConfigRet   ConfigPrint(const Config *cfg, FILE *stream);
 ConfigRet   ConfigPrintToFile(const Config *cfg, char *filename);
-ConfigRet   ConfigPrintToStream(const Config *cfg, FILE *stream);
 ConfigRet   ConfigPrintSettings(const Config *cfg, FILE *stream);
 
 Config*     ConfigNew();

@@ -1003,11 +1003,12 @@ static ConfigRet GetKeyVal(Config *cfg, char *p, char **key, char **val)
 }
 
 /**
- * \brief               ConfigOpenFile() opens the file, reads it's entire contents and
- *                      populates to cfg internal structures
+ * \brief               ConfigRead() reads the stream and populates the entire content to cfg handle
  *
- * \param cfg           config handle. If cfg is NULL a new one is created.
- * \param filename      name of file to open and load
+ * \param fp            FILE handle to read
+ * \param cfg           pointer to config handle.
+ *                      If not NULL a handle created with ConfigNew() must be given.
+ *                      If cfg is NULL a new one is created and saved to cfg.
  *
  * \return              ConfigRet type
  *
@@ -1020,9 +1021,8 @@ static ConfigRet GetKeyVal(Config *cfg, char *p, char **key, char **val)
  *                      CONFIG_ERR_PARSING
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigOpenFile(const char *filename, Config **cfg)
+ConfigRet ConfigRead(FILE *fp, Config **cfg)
 {
-	FILE *fp = NULL;
 	ConfigSection *sect = NULL;
 	char buf[4096];
 	char *p = NULL;
@@ -1031,11 +1031,8 @@ ConfigRet ConfigOpenFile(const char *filename, Config **cfg)
 	bool newcfg = false;
 	ConfigRet ret = CONFIG_RET_OK;
 
-	if ( !filename || !cfg || (*cfg && ((*cfg)->initnum != CONFIG_INIT_MAGIC)) )
+	if ( !fp || !cfg || (*cfg && ((*cfg)->initnum != CONFIG_INIT_MAGIC)) )
 		return CONFIG_ERR_INVALID_PARAM;
-
-	if ((fp = fopen(filename, "r")) == NULL)
-		return CONFIG_ERR_FILE;
 
 	if (*cfg == NULL) {
 		_cfg = ConfigNew();
@@ -1072,13 +1069,9 @@ ConfigRet ConfigOpenFile(const char *filename, Config **cfg)
 		}
 	}
 
-	fclose(fp);
-
 	return CONFIG_RET_OK;
 
 error:
-	fclose(fp);
-
 	if (newcfg) {
 		ConfigFree(_cfg);
 		*cfg = NULL;
@@ -1088,7 +1081,44 @@ error:
 }
 
 /**
- * \brief               ConfigPrintToStream() prints all cfg content to the stream
+ * \brief               ConfigReadFile() opens and reads the file and populates the entire content to cfg handle
+ *
+ * \param filename      name of file to open and load
+ * \param cfg           pointer to config handle.
+ *                      If not NULL a handle created with ConfigNew() must be given.
+ *                      If cfg is NULL a new one is created and saved to cfg.
+ *
+ * \return              ConfigRet type
+ *
+ *                      CONFIG_ERR_INVALID_PARAM
+ *                      CONFIG_ERR_FILE
+ *                      CONFIG_ERR_MEMALLOC
+ *                      CONFIG_ERR_NO_SECTION
+ *                      CONFIG_ERR_NO_KEY
+ *                      CONFIG_ERR_INVALID_VALUE
+ *                      CONFIG_ERR_PARSING
+ *                      CONFIG_RET_OK
+ */
+ConfigRet ConfigReadFile(const char *filename, Config **cfg)
+{
+	FILE *fp = NULL;
+	ConfigRet ret = CONFIG_RET_OK;
+
+	if ( !filename || !cfg || (*cfg && ((*cfg)->initnum != CONFIG_INIT_MAGIC)) )
+		return CONFIG_ERR_INVALID_PARAM;
+
+	if ((fp = fopen(filename, "r")) == NULL)
+		return CONFIG_ERR_FILE;
+
+	ret = ConfigRead(fp, cfg);
+
+	fclose(fp);
+
+	return ret;
+}
+
+/**
+ * \brief               ConfigPrint() prints all cfg content to the stream
  *
  * \param cfg           config handle
  * \param stream        stream to print
@@ -1098,7 +1128,7 @@ error:
  *                      CONFIG_ERR_INVALID_PARAM
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigPrintToStream(const Config *cfg, FILE *stream)
+ConfigRet ConfigPrint(const Config *cfg, FILE *stream)
 {
 	ConfigSection *sect;
 	ConfigKeyValue *kv;
@@ -1143,7 +1173,7 @@ ConfigRet ConfigPrintToFile(const Config *cfg, char *filename)
 	if ((fp = fopen(filename, "wb")) == NULL)
 		return CONFIG_ERR_FILE;
 
-	ret = ConfigPrintToStream(cfg, fp);
+	ret = ConfigPrint(cfg, fp);
 
 	fclose(fp);
 
