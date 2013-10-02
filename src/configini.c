@@ -28,7 +28,7 @@
 #include "configini.h"
 #include "queue.h"
 
-#define COMMENT_CHARS        "#;"   /* default comment chars */
+#define COMMENT_CHARS        "#"    /* default comment chars */
 #define KEYVAL_SEP           '='    /* default key-val seperator character */
 #define STR_TRUE             "1"    /* default string valu of true */
 #define STR_FALSE            "0"    /* default string valu of false */
@@ -52,6 +52,7 @@ typedef struct ConfigKeyValue
 typedef struct ConfigSection
 {
 	char *name;
+	int numofkv;
 	TAILQ_HEAD(, ConfigKeyValue) kv_list;
 	TAILQ_ENTRY(ConfigSection) next;
 } ConfigSection;
@@ -66,6 +67,7 @@ struct Config
 	char *true_str;
 	char *false_str;
 	int  initnum;
+	int numofsect;
 	TAILQ_HEAD(, ConfigSection) sect_list;
 };
 
@@ -228,8 +230,7 @@ bool ConfigHasSection(const Config *cfg, const char *section)
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-static ConfigRet ConfigGetKeyValue(const Config *cfg, ConfigSection *sect,
-		const char *key, ConfigKeyValue **kv)
+static ConfigRet ConfigGetKeyValue(const Config *cfg, ConfigSection *sect, const char *key, ConfigKeyValue **kv)
 {
 	if (!sect || !key || !kv)
 		return CONFIG_ERR_INVALID_PARAM;
@@ -240,6 +241,42 @@ static ConfigRet ConfigGetKeyValue(const Config *cfg, ConfigSection *sect,
 	}
 
 	return CONFIG_ERR_NO_KEY;
+}
+
+/**
+ * \brief               ConfigGetSectionCount() gets number of sections
+ *
+ * \param cfg           config handle to search in
+ *
+ * \return              Returns number of sections on success, -1 on failure.
+ */
+int ConfigGetSectionCount(const Config *cfg)
+{
+	if (!cfg)
+		return -1;
+
+	return (TAILQ_FIRST(&cfg->sect_list)->numofkv > 0 ? cfg->numofsect : cfg->numofsect - 1);
+}
+
+/**
+ * \brief               ConfigGetKeyCount() gets number of keys
+ *
+ * \param cfg           config handle to search in
+ * \param section       section name to search for
+ *
+ * \return              Returns number of keys on success, -1 on failure.
+ */
+int ConfigGetKeyCount(const Config *cfg, const char *section)
+{
+	ConfigSection *sect = NULL;
+
+	if (!cfg)
+		return -1;
+
+	if (ConfigGetSection(cfg, section, &sect) != CONFIG_RET_OK)
+		return -1;
+
+	return sect->numofkv;
 }
 
 
@@ -537,6 +574,7 @@ static ConfigRet ConfigAddSection(Config *cfg, const char *section, ConfigSectio
 
 	TAILQ_INIT(&(*sect)->kv_list);
 	TAILQ_INSERT_TAIL(&cfg->sect_list, *sect, next);
+	++(cfg->numofsect);
 
 	return CONFIG_RET_OK;
 }
@@ -583,6 +621,7 @@ ConfigRet ConfigAddString(Config *cfg, const char *section, const char *key, con
 			kv = calloc(1, sizeof(ConfigKeyValue));
 			kv->key = strdup(key);
 			TAILQ_INSERT_TAIL(&sect->kv_list, kv, next);
+			++(sect->numofkv);
 			break;
 
 		default:
@@ -733,6 +772,7 @@ ConfigRet ConfigAddBool(Config * cfg, const char *section, const char *key, bool
 static void _ConfigRemoveKey(ConfigSection *sect, ConfigKeyValue *kv)
 {
 	TAILQ_REMOVE(&sect->kv_list, kv, next);
+	--(sect->numofkv);
 
 	if (kv->key)
 		free(kv->key);
@@ -780,6 +820,7 @@ static void _ConfigRemoveSection(Config *cfg, ConfigSection *sect)
 		return;
 
 	TAILQ_REMOVE(&cfg->sect_list, sect, next);
+	--(cfg->numofsect);
 
 	TAILQ_FOREACH_SAFE(kv, &sect->kv_list, next, t_kv) {
 		_ConfigRemoveKey(sect, kv);

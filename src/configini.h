@@ -37,7 +37,7 @@ typedef unsigned char bool;
 
 typedef struct Config Config;
 
-#define CONFIG_SECTNAME_DEFAULT		NULL
+#define CONFIG_SECTNAME_DEFAULT		NULL	/* no section name */
 
 
 /**
@@ -71,6 +71,9 @@ ConfigRet   ConfigPrintSettings(const Config *cfg, FILE *stream);
 
 Config*     ConfigNew();
 void 	    ConfigFree(Config *cfg);
+
+int         ConfigGetSectionCount(const Config *cfg);
+int         ConfigGetKeyCount(const Config *cfg, const char *section);
 
 ConfigRet   ConfigSetCommentCharset(Config *cfg, const char *comment_ch);
 ConfigRet   ConfigSetKeyValSepChar(Config *cfg, char ch);

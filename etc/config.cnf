@@ -2,8 +2,6 @@
 # comment
 #
 
-; comment
-
 
 [SECT1]			# comment
 a=1				# comment
@@ -13,6 +11,7 @@ c	=	3		# comment
 # comment
 e = 5
 
+
 # comment
 [ SECT2 ]
 aa = 11
@@ -21,14 +20,13 @@ bb =	22		# commment
 cc=33
 
 
-; last modified 30 September 2013 by Taner YILMAZ
-[owner]
+[OWNER]
 name = Taner YILMAZ
 title=Software Engineer
  
 [database]
-; use IP address in case network name resolution is not working
+# database connection settings
 server=127.0.0.1    
 port=5555
-file="server.dat"
+file=test.db
 
