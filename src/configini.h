@@ -37,7 +37,8 @@ typedef unsigned char bool;
 
 typedef struct Config Config;
 
-#define CONFIG_SECTNAME_DEFAULT		NULL	/* no section name */
+
+#define CONFIG_SECTNAME_DEFAULT		NULL	/* config is flat data (has no section name) */
 
 
 /**

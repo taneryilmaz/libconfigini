@@ -98,6 +98,26 @@ static int StrSafeCpy(char *dst, const char *src, int size)
 	return (s - src - 1);
 }
 
+static bool StrIsTypeOfTrue(const char *s)
+{
+	if ( !strcasecmp(s, "true") || !strcasecmp(s, "yes") || !strcasecmp(s, "1") )
+		return true;
+	return false;
+}
+
+static bool StrIsTypeOfFalse(const char *s)
+{
+	if ( !strcasecmp(s, "false") || !strcasecmp(s, "no") || !strcasecmp(s, "0") )
+		return true;
+	return false;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 /**
  * \brief               ConfigSetCommentCharset() sets comment characters
  *
@@ -152,8 +172,8 @@ ConfigRet ConfigSetKeyValSepChar(Config *cfg, char ch)
  * \brief               ConfigSetCommentCharset() sets comment characters
  *
  * \param cfg           config handle
- * \param true_str      string value of boolean true
- * \param false_str     string value of boolean false
+ * \param true_str      string value of boolean true (must be one of these: "true", "yes", "1")
+ * \param false_str     string value of boolean false (must be one of these: "false", "no", "0")
  *
  * \return              ConfigRet type
  *
@@ -165,7 +185,9 @@ ConfigRet ConfigSetBoolString(Config *cfg, const char *true_str, const char *fal
 {
 	char *t, *f;
 
-	if (!cfg || !true_str || !*true_str || !false_str || !*false_str)
+	if ( !cfg ||
+		 !true_str || !*true_str || !StrIsTypeOfTrue(true_str) ||
+		 !false_str || !*false_str || !StrIsTypeOfFalse(false_str) )
 		return CONFIG_ERR_INVALID_PARAM;
 
 	if ((t = strdup(true_str)) == NULL)
@@ -545,9 +567,9 @@ ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key
 		return ret;
 	}
 
-	if ( !strcasecmp(kv->value, "true") || !strcasecmp(kv->value, "yes") || !strcasecmp(kv->value, "1") )
+	if (StrIsTypeOfTrue(kv->value))
 		*value = true;
-	else if ( !strcasecmp(kv->value, "false") || !strcasecmp(kv->value, "no") || !strcasecmp(kv->value, "0") )
+	else if (StrIsTypeOfFalse(kv->value))
 		*value = false;
 	else
 		return CONFIG_ERR_INVALID_VALUE;
