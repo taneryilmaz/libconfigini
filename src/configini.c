@@ -74,6 +74,30 @@ struct Config
 
 
 
+
+static int StrSafeCpy(char *dst, const char *src, int size)
+{
+	char *d = dst;
+	const char *s = src;
+	int n = size;
+
+	if (n != 0 && --n != 0) {
+		do {
+			if ((*d++ = *s++) == 0)
+				break;
+		} while (--n != 0);
+	}
+
+	if (n == 0) {
+		if (size != 0)
+			*d = '\0';
+		while (*s++)
+			;
+	}
+
+	return (s - src - 1);
+}
+
 /**
  * \brief               ConfigSetCommentCharset() sets comment characters
  *
@@ -293,6 +317,7 @@ int ConfigGetKeyCount(const Config *cfg, const char *section)
  * \param key           key to search for
  * \param value         value to save in
  * \param size          value buffer size
+ * \param dfl_value     default value to copy back if any error occurs
  *
  * \return              ConfigRet type
  *
@@ -301,7 +326,7 @@ int ConfigGetKeyCount(const Config *cfg, const char *section)
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *key, char *value, int size)
+ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *key, char *value, int size, const char *dfl_value)
 {
 	ConfigSection *sect = NULL;
 	ConfigKeyValue *kv = NULL;
@@ -310,11 +335,13 @@ ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *k
 	if (!cfg || !key || !value || (size < 1))
 		return CONFIG_ERR_INVALID_PARAM;
 
-	if ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK)
-		return ret;
+	*value = '\0';
 
-	if ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK)
+	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK) ||
+		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK) ) {
+		StrSafeCpy(value, dfl_value, size);
 		return ret;
+	}
 
 	snprintf(value, size, "%s", kv->value);
 
@@ -328,6 +355,7 @@ ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *k
  * \param section       section to search in
  * \param key           key to search for
  * \param value         value to save in
+ * \param dfl_value     default value to copy back if any error occurs
  *
  * \return              ConfigRet type
  *
@@ -337,7 +365,7 @@ ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *k
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key, int *value)
+ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key, int *value, int dfl_value)
 {
 	ConfigSection *sect = NULL;
 	ConfigKeyValue *kv = NULL;
@@ -347,13 +375,14 @@ ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key,
 	if (!cfg || !key || !value)
 		return  CONFIG_ERR_INVALID_PARAM;
 
-	if ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK)
-		return ret;
+	*value = dfl_value;
 
-	if ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK)
+	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK) ||
+		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK) ) {
 		return ret;
+	}
 
-	*value = (int) strtol(kv->key, &p, 10);
+	*value = (int) strtol(kv->value, &p, 10);
 	if (*p || (errno == ERANGE))
 		return CONFIG_ERR_INVALID_VALUE;
 
@@ -367,6 +396,7 @@ ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key,
  * \param section       section to search in
  * \param key           key to search for
  * \param value         value to save in
+ * \param dfl_value     default value to copy back if any error occurs
  *
  * \return              ConfigRet type
  *
@@ -376,7 +406,7 @@ ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key,
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const char *key, unsigned int *value)
+ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const char *key, unsigned int *value, unsigned int dfl_value)
 {
 	ConfigSection *sect = NULL;
 	ConfigKeyValue *kv = NULL;
@@ -386,13 +416,14 @@ ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const ch
 	if (!cfg || !key || !value)
 		return CONFIG_ERR_INVALID_PARAM;
 
-	if ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK)
-		return ret;
+	*value = dfl_value;
 
-	if ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK)
+	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK) ||
+		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK) ) {
 		return ret;
+	}
 
-	*value = (unsigned int) strtoul(kv->key, &p, 10);
+	*value = (unsigned int) strtoul(kv->value, &p, 10);
 	if (*p || (errno == ERANGE))
 		return CONFIG_ERR_INVALID_VALUE;
 
@@ -406,6 +437,7 @@ ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const ch
  * \param section       section to search in
  * \param key           key to search for
  * \param value         value to save in
+ * \param dfl_value     default value to copy back if any error occurs
  *
  * \return              ConfigRet type
  *
@@ -415,7 +447,7 @@ ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const ch
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *key, float *value)
+ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *key, float *value, float dfl_value)
 {
 	ConfigSection *sect = NULL;
 	ConfigKeyValue *kv = NULL;
@@ -425,13 +457,14 @@ ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *ke
 	if (!cfg || !key || !value)
 		return CONFIG_ERR_INVALID_PARAM;
 
-	if ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK)
-		return ret;
+	*value = dfl_value;
 
-	if ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK)
+	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK) ||
+		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK) ) {
 		return ret;
+	}
 
-	*value = strtof(kv->key, &p);
+	*value = strtof(kv->value, &p);
 	if (*p || (errno == ERANGE))
 		return CONFIG_ERR_INVALID_VALUE;
 
@@ -445,6 +478,7 @@ ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *ke
  * \param section       section to search in
  * \param key           key to search for
  * \param value         value to save in
+ * \param dfl_value     default value to copy back if any error occurs
  *
  * \return              ConfigRet type
  *
@@ -454,7 +488,7 @@ ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *ke
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *key, double *value)
+ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *key, double *value, double dfl_value)
 {
 	ConfigSection *sect = NULL;
 	ConfigKeyValue *kv = NULL;
@@ -464,13 +498,14 @@ ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *k
 	if (!cfg || !key || !value)
 		return CONFIG_ERR_INVALID_PARAM;
 
-	if ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK)
-		return ret;
+	*value = dfl_value;
 
-	if ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK)
+	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK) ||
+		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK) ) {
 		return ret;
+	}
 
-	*value = strtod(kv->key, &p);
+	*value = strtod(kv->value, &p);
 	if (*p || (errno == ERANGE))
 		return CONFIG_ERR_INVALID_VALUE;
 
@@ -484,6 +519,7 @@ ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *k
  * \param section       section to search in
  * \param key           key to search for
  * \param value         value to save in
+ * \param dfl_value     default value to copy back if any error occurs
  *
  * \return              ConfigRet type
  *
@@ -493,7 +529,7 @@ ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *k
  *                      CONFIG_ERR_NO_KEY
  *                      CONFIG_RET_OK
  */
-ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key, bool *value)
+ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key, bool *value, bool dfl_value)
 {
 	ConfigSection *sect = NULL;
 	ConfigKeyValue *kv = NULL;
@@ -502,29 +538,21 @@ ConfigRet ConfigReadBool(const Config *cfg, const char *section, const char *key
 	if (!cfg || !key || !value)
 		return CONFIG_ERR_INVALID_PARAM;
 
-	if ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK)
-		return ret;
+	*value = dfl_value;
 
-	if ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK)
+	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_RET_OK) ||
+		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_RET_OK) ) {
 		return ret;
+	}
 
-	if ( !strcasecmp(kv->value, "true") ||
-		 !strcasecmp(kv->value, "yes") ||
-		 !strcasecmp(kv->value, "1") ) {
+	if ( !strcasecmp(kv->value, "true") || !strcasecmp(kv->value, "yes") || !strcasecmp(kv->value, "1") )
 		*value = true;
-
-		return CONFIG_RET_OK;
-	}
-
-	if ( !strcasecmp(kv->value, "false") ||
-		 !strcasecmp(kv->value, "no") ||
-		 !strcasecmp(kv->value, "0") ) {
+	else if ( !strcasecmp(kv->value, "false") || !strcasecmp(kv->value, "no") || !strcasecmp(kv->value, "0") )
 		*value = false;
+	else
+		return CONFIG_ERR_INVALID_VALUE;
 
-		return CONFIG_RET_OK;
-	}
-
-	return CONFIG_ERR_INVALID_VALUE;
+	return CONFIG_RET_OK;
 }
 
 

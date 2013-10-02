@@ -105,6 +105,9 @@ static void Test3()
 static void Test4()
 {
 	Config *cfg = NULL;
+	char s[1024];
+	bool b;
+	float f;
 
 	ENTER_TEST_FUNC;
 
@@ -116,6 +119,22 @@ static void Test4()
 	ConfigAddFloat(cfg, CONFIG_SECTNAME_DEFAULT, "degree", 35.0);
 
 	ConfigPrint(cfg, stdout);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
+
+	ConfigReadString(cfg, CONFIG_SECTNAME_DEFAULT, "Mehmet Akif Ersoy", s, sizeof(s), "Poet");
+	fprintf(stdout, "Mehmet Akif Ersoy = %s\n", s);
+
+	ConfigReadString(cfg, CONFIG_SECTNAME_DEFAULT, "Mehmet Akif ERSOY", s, sizeof(s), "Poet");
+	fprintf(stdout, "Mehmet Akif ERSOY = %s\n", s);
+
+	ConfigReadBool(cfg, CONFIG_SECTNAME_DEFAULT, "isset", &b, false);
+	fprintf(stdout, "isset = %s\n", b ? "true" : "false");
+
+	ConfigReadFloat(cfg, CONFIG_SECTNAME_DEFAULT, "degree", &f, 1.5);
+	fprintf(stdout, "degree = %f\n", f);
+
+	///////////////////////////////////////////////////////////////////////////////////////////////
 
 	ConfigFree(cfg);
 }

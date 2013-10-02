@@ -79,12 +79,12 @@ ConfigRet   ConfigSetCommentCharset(Config *cfg, const char *comment_ch);
 ConfigRet   ConfigSetKeyValSepChar(Config *cfg, char ch);
 ConfigRet   ConfigSetBoolString(Config *cfg, const char *true_str, const char *false_str);
 
-ConfigRet   ConfigReadString(const Config *cfg, const char *section, const char *key, char *value, int size);
-ConfigRet   ConfigReadInt(const Config *cfg, const char *section, const char *key, int *value);
-ConfigRet   ConfigReadUnsignedInt(const Config *cfg, const char *section, const char *key, unsigned int *value);
-ConfigRet   ConfigReadFloat(const Config *cfg, const char *section, const char *key, float *value);
-ConfigRet   ConfigReadDouble(const Config *cfg, const char *section, const char *key, double *value);
-ConfigRet   ConfigReadBool(const Config *cfg, const char *section, const char *key, bool *value);
+ConfigRet   ConfigReadString(const Config *cfg, const char *section, const char *key, char *value, int size, const char *dfl_value);
+ConfigRet   ConfigReadInt(const Config *cfg, const char *section, const char *key, int *value, int dfl_value);
+ConfigRet   ConfigReadUnsignedInt(const Config *cfg, const char *section, const char *key, unsigned int *value, unsigned int dfl_value);
+ConfigRet   ConfigReadFloat(const Config *cfg, const char *section, const char *key, float *value, float dfl_value);
+ConfigRet   ConfigReadDouble(const Config *cfg, const char *section, const char *key, double *value, double dfl_value);
+ConfigRet   ConfigReadBool(const Config *cfg, const char *section, const char *key, bool *value, bool dfl_value);
 
 ConfigRet   ConfigAddString(Config *cfg, const char *section, const char *key, const char *value);
 ConfigRet   ConfigAddInt(Config *cfg, const char *section, const char *key, int value);
