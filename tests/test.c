@@ -29,7 +29,7 @@ static void Test1()
 
 	ENTER_TEST_FUNC;
 
-	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
+	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_OK) {
 		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
 		return;
 	}
@@ -54,7 +54,7 @@ static void Test2()
 	ConfigSetBoolString(cfg, "yes", "no");
 
 	/* we can give initialized handle (rules has been set) */
-	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_RET_OK) {
+	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_OK) {
 		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
 		return;
 	}
