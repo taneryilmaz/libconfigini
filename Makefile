@@ -18,7 +18,7 @@ OBJS := ${SRCS:.c=.o}
 INSTALLDIR = /usr/local
 
 
-CFLAGS = -g -ggdb -Wall
+CFLAGS = -g -Wall -Wno-char-subscripts
 
 CC = gcc
 

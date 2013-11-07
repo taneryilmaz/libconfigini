@@ -8,7 +8,7 @@ See the INSTALL file for installation instructions.
 Author
 ======
 
-Taner YILMAZ <taner44@gmail.com>
+Taner YILMAZ <taner44 AT gmail.com>
 
 
 License

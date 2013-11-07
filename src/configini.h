@@ -63,15 +63,16 @@ extern "C" {
 #endif
 
 
+
+Config*     ConfigNew();
+void        ConfigFree(Config *cfg);
+
 ConfigRet   ConfigRead(FILE *fp, Config **cfg);
 ConfigRet   ConfigReadFile(const char *filename, Config **cfg);
 
 ConfigRet   ConfigPrint(const Config *cfg, FILE *stream);
 ConfigRet   ConfigPrintToFile(const Config *cfg, char *filename);
 ConfigRet   ConfigPrintSettings(const Config *cfg, FILE *stream);
-
-Config*     ConfigNew();
-void 	    ConfigFree(Config *cfg);
 
 int         ConfigGetSectionCount(const Config *cfg);
 int         ConfigGetKeyCount(const Config *cfg, const char *section);
