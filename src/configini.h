@@ -1,6 +1,6 @@
 /*
    libconfigini - an ini formatted configuration parser library
-   Copyright (C) 2013-present Taner YILMAZ <taner44 AT gmail.com>
+   Copyright (C) 2013-present Taner YILMAZ <taner44@gmail.com>
 
 
    This library is free software; you can redistribute it and/or

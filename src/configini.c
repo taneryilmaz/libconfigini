@@ -1,6 +1,6 @@
 /*
    libconfigini - an ini formatted configuration parser library
-   Copyright (C) 2013-present Taner YILMAZ <taner44 AT gmail.com>
+   Copyright (C) 2013-present Taner YILMAZ <taner44@gmail.com>
 
 
    This library is free software; you can redistribute it and/or
@@ -332,9 +332,10 @@ int ConfigGetKeyCount(const Config *cfg, const char *section)
 
 
 /**
- * \brief               ConfigReadString() reads a string value from the cfg. If any error occurs
- *                      default value is copied to 'value' buffer and returns reason. So, if key is
- *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
+ * \brief               ConfigReadString() reads a string value from the cfg.
+ *                      If any error occurs default value is copied to 'value' buffer and
+ *                      returns reason. If key is optional and does not exists in config,
+ *                      the 'value' is default value and return is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -374,9 +375,10 @@ ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *k
 }
 
 /**
- * \brief               ConfigReadInt() reads an integer value from the cfg. If any error occurs
- *                      default value is copied to 'value' buffer and returns reason. So, if key is
- *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
+ * \brief               ConfigReadInt() reads an integer value from the cfg.
+ *                      If any error occurs default value is copied to 'value' buffer and
+ *                      returns reason. If key is optional and does not exists in config,
+ *                      the 'value' is default value and return is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -417,9 +419,10 @@ ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key,
 }
 
 /**
- * \brief               ConfigReadUnsignedInt() reads an unsigned integer value from the cfg. If any error occurs
- *                      default value is copied to 'value' buffer and returns reason. So, if key is
- *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
+ * \brief               ConfigReadUnsignedInt() reads an unsigned integer value from the cfg.
+ *                      If any error occurs default value is copied to 'value' buffer and
+ *                      returns reason. If key is optional and does not exists in config,
+ *                      the 'value' is default value and return is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -460,9 +463,10 @@ ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const ch
 }
 
 /**
- * \brief               ConfigReadFloat() reads a float value from the cfg. If any error occurs
- *                      default value is copied to 'value' buffer and returns reason. So, if key is
- *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
+ * \brief               ConfigReadFloat() reads a float value from the cfg.
+ *                      If any error occurs default value is copied to 'value' buffer and
+ *                      returns reason. If key is optional and does not exists in config,
+ *                      the 'value' is default value and return is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -503,9 +507,10 @@ ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *ke
 }
 
 /**
- * \brief               ConfigReadDouble() reads a double value from the cfg. If any error occurs
- *                      default value is copied to 'value' buffer and returns reason. So, if key is
- *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
+ * \brief               ConfigReadDouble() reads a double value from the cfg.
+ *                      If any error occurs default value is copied to 'value' buffer and
+ *                      returns reason. If key is optional and does not exists in config,
+ *                      the 'value' is default value and return is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -546,9 +551,10 @@ ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *k
 }
 
 /**
- * \brief               ConfigReadBool() reads a boolean value from the cfg. If any error occurs
- *                      default value is copied to 'value' buffer and returns reason. So, if key is
- *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
+ * \brief               ConfigReadBool() reads a boolean value from the cfg.
+ *                      If any error occurs default value is copied to 'value' buffer and
+ *                      returns reason. If key is optional and does not exists in config,
+ *                      the 'value' is default value and return is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -681,8 +687,12 @@ ConfigRet ConfigAddString(Config *cfg, const char *section, const char *key, con
 			break;
 
 		case CONFIG_ERR_NO_KEY:
-			kv = calloc(1, sizeof(ConfigKeyValue));
-			kv->key = strdup(key);
+			if ((kv = calloc(1, sizeof(ConfigKeyValue))) == NULL)
+				return CONFIG_ERR_MEMALLOC;
+			if ((kv->key = strdup(key)) == NULL) {
+				free(kv);
+				return CONFIG_ERR_MEMALLOC;
+			}
 			TAILQ_INSERT_TAIL(&sect->kv_list, kv, next);
 			++(sect->numofkv);
 			break;
@@ -699,6 +709,13 @@ ConfigRet ConfigAddString(Config *cfg, const char *section, const char *key, con
 		--q;
 
 	kv->value = (char *) malloc(q - p + 1);
+	if (kv->value == NULL) {
+		TAILQ_REMOVE(&sect->kv_list, kv, next);
+		--(sect->numofkv);
+		free(kv->key);
+		free(kv);
+		return CONFIG_ERR_MEMALLOC;
+	}
 	memcpy(kv->value, p, q - p);
 	kv->value[q - p] = '\0';
 
@@ -921,7 +938,8 @@ ConfigRet ConfigRemoveSection(Config *cfg, const char *section)
 }
 
 /**
- * \brief               ConfigNew() creates a cfg
+ * \brief               ConfigNew() creates a cfg handle with
+ *                      default section which has no section name
  *
  * \return              Config* handle
  */
@@ -951,7 +969,7 @@ Config *ConfigNew()
 }
 
 /**
- * \brief               ConfigFree() frees the memory for a cfg
+ * \brief               ConfigFree() frees the memory for the cfg handle
  *
  * \param cfg           config handle
  */
