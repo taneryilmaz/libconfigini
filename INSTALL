@@ -8,6 +8,7 @@ $ make clean installdir=<DIR> install
 
 	Builds and installs static library to <DIR>/lib and headers to <DIR>/include
 
-$ make doxygen
+
+$ make doc
 	
-	Generate doxygen documentation
+	Generate doxygen based documentation

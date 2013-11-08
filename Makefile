@@ -1,6 +1,6 @@
 #
 #   libconfigini - an ini formatted configuration parser library
-#   Copyright (C) 2013-present Taner YILMAZ
+#   Copyright (C) 2013-present Taner YILMAZ <taner44 AT gmail.com>
 #
 
 LIB = configini
@@ -29,7 +29,7 @@ ifdef installdir
 endif
 
 
-.PHONY: all install test clean doxygen help
+.PHONY: all install test clean doc help
 
 all: $(LIBARCH)
 
@@ -47,11 +47,11 @@ test: $(LIBARCH)
 	$(MAKE) -C tests/
 
 clean:
-	rm -f ~core~ $(OBJS) $(LIBARCH)
+	rm -f ~core~ *.stackdump $(OBJS) $(LIBARCH)
 	rm -rf html/
 	$(MAKE) -C tests/ clean
 
-doxygen: docs/html.dox
+doc: docs/html.dox
 	@mkdir -p html
 	@doxygen docs/html.dox
 	
@@ -64,5 +64,5 @@ help:
 	@echo "   install                 Install library to $INSTALLDIR/lib and its header to $INSTALLDIR/include"
 	@echo "   test                    Run unittests"
 	@echo "   clean                   Clean library generated files"
-	@echo "   doxygen                 Generate documentation"
+	@echo "   doc                     Generate documentation (as doxygen)"
 	

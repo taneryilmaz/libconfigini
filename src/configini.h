@@ -1,6 +1,6 @@
 /*
    libconfigini - an ini formatted configuration parser library
-   Copyright (C) 2013-present Taner YILMAZ
+   Copyright (C) 2013-present Taner YILMAZ <taner44 AT gmail.com>
 
 
    This library is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ typedef struct Config Config;
  */
 typedef enum
 {
-	CONFIG_OK,                    /* no error */
+	CONFIG_OK,                    /* ok (no error) */
 	CONFIG_ERR_FILE,              /* file io error (file not exists, cannot open file, ...) */
 	CONFIG_ERR_NO_SECTION,        /* section does not exist */
 	CONFIG_ERR_NO_KEY,            /* key does not exist */

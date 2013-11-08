@@ -1,6 +1,6 @@
 /*
    libconfigini - an ini formatted configuration parser library
-   Copyright (C) 2013-present Taner YILMAZ
+   Copyright (C) 2013-present Taner YILMAZ <taner44 AT gmail.com>
 
 
    This library is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ struct Config
 
 
 
-static int StrSafeCpy(char *dst, const char *src, int size)
+static int StrSafeCopy(char *dst, const char *src, int size)
 {
 	char *d = dst;
 	const char *s = src;
@@ -332,7 +332,9 @@ int ConfigGetKeyCount(const Config *cfg, const char *section)
 
 
 /**
- * \brief               ConfigReadString() reads a string value from the cfg
+ * \brief               ConfigReadString() reads a string value from the cfg. If any error occurs
+ *                      default value is copied to 'value' buffer and returns reason. So, if key is
+ *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -361,17 +363,20 @@ ConfigRet ConfigReadString(const Config *cfg, const char *section, const char *k
 
 	if ( ((ret = ConfigGetSection(cfg, section, &sect)) != CONFIG_OK) ||
 		 ((ret = ConfigGetKeyValue(cfg, sect, key, &kv)) != CONFIG_OK) ) {
-		StrSafeCpy(value, dfl_value, size);
+		if (dfl_value)
+			StrSafeCopy(value, dfl_value, size);
 		return ret;
 	}
 
-	snprintf(value, size, "%s", kv->value);
+	StrSafeCopy(value, kv->value, size);
 
 	return CONFIG_OK;
 }
 
 /**
- * \brief               ConfigReadInt() reads an integer value from the cfg
+ * \brief               ConfigReadInt() reads an integer value from the cfg. If any error occurs
+ *                      default value is copied to 'value' buffer and returns reason. So, if key is
+ *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -412,7 +417,9 @@ ConfigRet ConfigReadInt(const Config *cfg, const char *section, const char *key,
 }
 
 /**
- * \brief               ConfigReadUnsignedInt() reads an unsigned integer value from the cfg
+ * \brief               ConfigReadUnsignedInt() reads an unsigned integer value from the cfg. If any error occurs
+ *                      default value is copied to 'value' buffer and returns reason. So, if key is
+ *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -453,7 +460,9 @@ ConfigRet ConfigReadUnsignedInt(const Config *cfg, const char *section, const ch
 }
 
 /**
- * \brief               ConfigReadFloat() reads a float value from the cfg
+ * \brief               ConfigReadFloat() reads a float value from the cfg. If any error occurs
+ *                      default value is copied to 'value' buffer and returns reason. So, if key is
+ *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -494,7 +503,9 @@ ConfigRet ConfigReadFloat(const Config *cfg, const char *section, const char *ke
 }
 
 /**
- * \brief               ConfigReadDouble() reads a double value from the cfg
+ * \brief               ConfigReadDouble() reads a double value from the cfg. If any error occurs
+ *                      default value is copied to 'value' buffer and returns reason. So, if key is
+ *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
@@ -535,7 +546,9 @@ ConfigRet ConfigReadDouble(const Config *cfg, const char *section, const char *k
 }
 
 /**
- * \brief               ConfigReadBool() reads a boolean value from the cfg
+ * \brief               ConfigReadBool() reads a boolean value from the cfg. If any error occurs
+ *                      default value is copied to 'value' buffer and returns reason. So, if key is
+ *                      optional 'value' has default value and return type is CONFIG_ERR_NO_KEY
  *
  * \param cfg           config handle
  * \param section       section to search in
