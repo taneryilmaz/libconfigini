@@ -59,10 +59,10 @@ doc: docs/html.dox
 help:
 	@echo "Installdir: $(INSTALLDIR)"
 	@echo "targets:"
-	@echo "   all                     Build all"
-	@echo "   installdir=<path>       Install library to path"
-	@echo "   install                 Install library to $INSTALLDIR/lib and its header to $INSTALLDIR/include"
-	@echo "   test                    Run unittests"
-	@echo "   clean                   Clean library generated files"
-	@echo "   doc                     Generate documentation (as doxygen)"
+	@echo "   all                 Build all"
+	@echo "   installdir=<path>   Install library to path"
+	@echo "   install             Install library to $INSTALLDIR/lib and its header to $INSTALLDIR/include"
+	@echo "   test                Run unittests"
+	@echo "   clean               Clean library generated files"
+	@echo "   doc                 Generate documentation (as doxygen)"
 	

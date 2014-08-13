@@ -4,17 +4,25 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 #include "../src/configini.h"
+
+
+#define LOG_ERR(fmt, ...)	\
+	fprintf(stderr, "[ERROR] <%s:%d> : " fmt "\n", __FUNCTION__, __LINE__, __VA_ARGS__)
+
+#define LOG_INFO(fmt, ...)	\
+	fprintf(stderr, "[INFO] : " fmt "\n", __VA_ARGS__)
 
 
 #define CONFIGREADFILE		"../etc/config.cnf"
 #define CONFIGSAVEFILE		"../etc/new-config.cnf"
 
-#define ENTER_TEST_FUNC																			\
-	do {																						\
-		printf("\n-----------------------------------------------------------------------\n");	\
-		printf("<TEST: %s>\n\n", __FUNCTION__);													\
+#define ENTER_TEST_FUNC														\
+	do {																	\
+		LOG_INFO("%s", "\n-----------------------------------------------");\
+		LOG_INFO("<TEST: %s>\n", __FUNCTION__);								\
 	} while (0)
 
 
@@ -30,7 +38,7 @@ static void Test1()
 	ENTER_TEST_FUNC;
 
 	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_OK) {
-		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
+		LOG_ERR("ConfigOpenFile failed for %s", CONFIGREADFILE);
 		return;
 	}
 
@@ -55,7 +63,7 @@ static void Test2()
 
 	/* we can give initialized handle (rules has been set) */
 	if (ConfigReadFile(CONFIGREADFILE, &cfg) != CONFIG_OK) {
-		fprintf(stderr, "ConfigOpenFile failed for %s\n", CONFIGREADFILE);
+		LOG_ERR("ConfigOpenFile failed for %s", CONFIGREADFILE);
 		return;
 	}
 
@@ -64,7 +72,7 @@ static void Test2()
 	ConfigRemoveKey(cfg, "owner", "title");
 	ConfigRemoveKey(cfg, "database", "file");
 
-	ConfigAddBool(cfg, "SECT1", "isModified", true);
+	ConfigAddBool  (cfg, "SECT1", "isModified", true);
 	ConfigAddString(cfg, "owner", "country", "Turkey");
 
 	ConfigPrintSettings(cfg, stdout);
@@ -88,9 +96,9 @@ static void Test3()
 	ConfigSetBoolString(cfg, "true", "false");
 
 	ConfigAddString(cfg, "SECTION1", "Istanbul", "34");
-	ConfigAddInt(cfg, "SECTION1", "Malatya", 44);
+	ConfigAddInt   (cfg, "SECTION1", "Malatya", 44);
 
-	ConfigAddBool(cfg, "SECTION2", "enable", true);
+	ConfigAddBool  (cfg, "SECTION2", "enable", true);
 	ConfigAddDouble(cfg, "SECTION2", "Lira", 100);
 
 	ConfigPrintSettings(cfg, stdout);
@@ -113,26 +121,26 @@ static void Test4()
 
 	cfg = ConfigNew();
 
-	ConfigAddString(cfg, CONFIG_SECTNAME_DEFAULT, "Mehmet Akif ERSOY", "Safahat");
-	ConfigAddString(cfg, CONFIG_SECTNAME_DEFAULT, "Necip Fazil KISAKUREK", "Cile");
-	ConfigAddBool(cfg, CONFIG_SECTNAME_DEFAULT, "isset", true);
-	ConfigAddFloat(cfg, CONFIG_SECTNAME_DEFAULT, "degree", 35.0);
+	ConfigAddString(cfg, CONFIG_SECTION_FLAT, "Mehmet Akif ERSOY", "Safahat");
+	ConfigAddString(cfg, CONFIG_SECTION_FLAT, "Necip Fazil KISAKUREK", "Cile");
+	ConfigAddBool  (cfg, CONFIG_SECTION_FLAT, "isset", true);
+	ConfigAddFloat (cfg, CONFIG_SECTION_FLAT, "degree", 35.0);
 
 	ConfigPrint(cfg, stdout);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	ConfigReadString(cfg, CONFIG_SECTNAME_DEFAULT, "Mehmet Akif Ersoy", s, sizeof(s), "Poet");
-	fprintf(stdout, "Mehmet Akif Ersoy = %s\n", s);
+	ConfigReadString(cfg, CONFIG_SECTION_FLAT, "Mehmet Akif Ersoy", s, sizeof(s), "Poet");
+	LOG_INFO("Mehmet Akif Ersoy = %s", s);
 
-	ConfigReadString(cfg, CONFIG_SECTNAME_DEFAULT, "Mehmet Akif ERSOY", s, sizeof(s), "Poet");
-	fprintf(stdout, "Mehmet Akif ERSOY = %s\n", s);
+	ConfigReadString(cfg, CONFIG_SECTION_FLAT, "Mehmet Akif ERSOY", s, sizeof(s), "Poet");
+	LOG_INFO("Mehmet Akif ERSOY = %s", s);
 
-	ConfigReadBool(cfg, CONFIG_SECTNAME_DEFAULT, "isset", &b, false);
-	fprintf(stdout, "isset = %s\n", b ? "true" : "false");
+	ConfigReadBool(cfg, CONFIG_SECTION_FLAT, "isset", &b, false);
+	LOG_INFO("isset = %s", b ? "true" : "false");
 
-	ConfigReadFloat(cfg, CONFIG_SECTNAME_DEFAULT, "degree", &f, 1.5);
-	fprintf(stdout, "degree = %f\n", f);
+	ConfigReadFloat(cfg, CONFIG_SECTION_FLAT, "degree", &f, 1.5);
+	LOG_INFO("degree = %f", f);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
