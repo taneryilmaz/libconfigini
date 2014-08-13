@@ -11,4 +11,4 @@ $ make clean installdir=<DIR> install
 
 $ make doc
 	
-	Generate doxygen based documentation
+	Generate doxygen based documentation.
