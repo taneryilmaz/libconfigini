@@ -92,19 +92,19 @@ ConfigRet   ConfigSetCommentCharset(Config *cfg, const char *comment_ch);
 ConfigRet   ConfigSetKeyValSepChar (Config *cfg, char ch);
 ConfigRet   ConfigSetBoolString    (Config *cfg, const char *true_str, const char *false_str);
 
-ConfigRet   ConfigReadString       (const Config *cfg, const char *sect, const char *key, char *        value, int size, const char *dfl_value);
-ConfigRet   ConfigReadInt          (const Config *cfg, const char *sect, const char *key, int *         value, int          dfl_value);
-ConfigRet   ConfigReadUnsignedInt  (const Config *cfg, const char *sect, const char *key, unsigned int *value, unsigned int dfl_value);
-ConfigRet   ConfigReadFloat        (const Config *cfg, const char *sect, const char *key, float *       value, float        dfl_value);
-ConfigRet   ConfigReadDouble       (const Config *cfg, const char *sect, const char *key, double *      value, double       dfl_value);
-ConfigRet   ConfigReadBool         (const Config *cfg, const char *sect, const char *key, bool *        value, bool         dfl_value);
+ConfigRet   ConfigReadString       (const Config *cfg, const char *sect, const char *key, char *        val, int size, const char * dfl_val);
+ConfigRet   ConfigReadInt          (const Config *cfg, const char *sect, const char *key, int *         val,           int          dfl_val);
+ConfigRet   ConfigReadUnsignedInt  (const Config *cfg, const char *sect, const char *key, unsigned int *val,           unsigned int dfl_val);
+ConfigRet   ConfigReadFloat        (const Config *cfg, const char *sect, const char *key, float *       val,           float        dfl_val);
+ConfigRet   ConfigReadDouble       (const Config *cfg, const char *sect, const char *key, double *      val,           double       dfl_val);
+ConfigRet   ConfigReadBool         (const Config *cfg, const char *sect, const char *key, bool *        val,           bool         dfl_val);
 
-ConfigRet   ConfigAddString        (Config *cfg, const char *sect, const char *key, const char *value);
-ConfigRet   ConfigAddInt           (Config *cfg, const char *sect, const char *key, int value);
-ConfigRet   ConfigAddUnsignedInt   (Config *cfg, const char *sect, const char *key, unsigned int value);
-ConfigRet   ConfigAddFloat         (Config *cfg, const char *sect, const char *key, float value);
-ConfigRet   ConfigAddDouble        (Config *cfg, const char *sect, const char *key, double value);
-ConfigRet   ConfigAddBool          (Config *cfg, const char *sect, const char *key, bool value);
+ConfigRet   ConfigAddString        (Config *cfg, const char *sect, const char *key, const char  *val);
+ConfigRet   ConfigAddInt           (Config *cfg, const char *sect, const char *key, int          val);
+ConfigRet   ConfigAddUnsignedInt   (Config *cfg, const char *sect, const char *key, unsigned int val);
+ConfigRet   ConfigAddFloat         (Config *cfg, const char *sect, const char *key, float        val);
+ConfigRet   ConfigAddDouble        (Config *cfg, const char *sect, const char *key, double       val);
+ConfigRet   ConfigAddBool          (Config *cfg, const char *sect, const char *key, bool         val);
 
 bool        ConfigHasSection       (const Config *cfg, const char *sect);
 
