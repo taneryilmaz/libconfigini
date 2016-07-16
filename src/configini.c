@@ -907,6 +907,10 @@ void ConfigFree(Config *cfg)
 		_ConfigRemoveSection(cfg, sect);
 	}
 
+	if (cfg->comment_chars) free(cfg->comment_chars);
+	if (cfg->true_str)      free(cfg->true_str);
+	if (cfg->false_str)     free(cfg->false_str);
+
 	free(cfg);
 }
 
